@@ -1,0 +1,17 @@
+# SolidWorks lock/temp files
+~$*.SLD*
+*.SLDPRT.lock
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Editor
+.vscode/
