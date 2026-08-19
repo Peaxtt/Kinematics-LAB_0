@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(ASm13.SLDASM)
+project(Robot67.SLDASM)
 
 find_package(catkin REQUIRED)
 
