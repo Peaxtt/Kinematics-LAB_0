@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="my_robot">
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-8.6455E-17 -7.6229E-18 0.0079611" rpy="0 0 0" />
+      <mass value="2.4357" />
+      <inertia ixx="0.031905" ixy="6.3527E-18" ixz="-1.6146E-20" iyy="0.031905" iyz="2.8691E-18" izz="0.063649" />
+    </inertial>
+    <visual>
+      <origin xyz="0.000000 0.000000 0.000000" rpy="-0.000000 0.000000 -0.000000" />
+      <geometry>
+        <mesh filename="package://my_robot/meshes/base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.000000 0.000000 0.000000" rpy="-0.000000 0.000000 -0.000000" />
+      <geometry>
+        <mesh filename="package://my_robot/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="Stand">
+    <inertial>
+      <origin xyz="-0.0014687 2.3065E-16 0.39733" rpy="0 0 0" />
+      <mass value="5.8952" />
+      <inertia ixx="0.32052" ixy="1.7511E-20" ixz="0.00080234" iyy="0.32022" iyz="-1.8103E-16" izz="0.0075058" />
+    </inertial>
+    <visual>
+      <origin xyz="0.000000 0.000000 0.000000" rpy="-0.000000 0.000000 -0.000000" />
+      <geometry>
+        <mesh filename="package://my_robot/meshes/Stand.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.000000 0.000000 0.000000" rpy="-0.000000 0.000000 -0.000000" />
+      <geometry>
+        <mesh filename="package://my_robot/meshes/Stand.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="q1" type="continuous">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="Stand" />
+    <axis xyz="0 0 1" />
+  </joint>
+  <link name="Arm">
+    <inertial>
+      <origin xyz="0.27245 -8.9366E-17 5.5511E-17" rpy="0 0 0" />
+      <mass value="0.4672" />
+      <inertia ixx="0.00017046" ixy="4.1404E-18" ixz="-1.5384E-18" iyy="0.011946" iyz="-7.2188E-22" izz="0.011943" />
+    </inertial>
+    <visual>
+      <origin xyz="0.000000 0.000000 -0.235000" rpy="-0.000000 0.000000 -0.000000" />
+      <geometry>
+        <mesh filename="package://my_robot/meshes/Arm.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.000000 0.000000 -0.235000" rpy="-0.000000 0.000000 -0.000000" />
+      <geometry>
+        <mesh filename="package://my_robot/meshes/Arm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="q2" type="prismatic">
+    <origin xyz="0 0 0.235" rpy="0 0 0" />
+    <parent link="Stand" />
+    <child link="Arm" />
+    <axis xyz="0 0 1" />
+    <limit lower="0" upper="0.54" effort="0" velocity="0" />
+  </joint>
+  <link name="Hand">
+    <inertial>
+      <origin xyz="-0.22693 4.31E-07 0" rpy="0 -1.5707963267948966 0" />
+      <mass value="0.21681" />
+      <inertia ixx="1.9957E-05" ixy="2.2948E-08" ixz="0" iyy="0.0048493" iyz="0" izz="0.0048493" />
+    </inertial>
+    <visual>
+      <origin xyz="0.235000 0.000000 -0.090000" rpy="0 -1.5707963267948966 0" />
+      <geometry>
+        <mesh filename="package://my_robot/meshes/Hand.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.235000 0.000000 -0.090000" rpy="0 -1.5707963267948966 0" />
+      <geometry>
+        <mesh filename="package://my_robot/meshes/Hand.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="q3" type="prismatic">
+    <origin xyz="0.09 0 0" rpy="0 1.5707963267948966 0" />
+    <parent link="Arm" />
+    <child link="Hand" />
+    <axis xyz="0 0 1" />
+    <limit lower="0" upper="0.4" effort="0" velocity="0" />
+  </joint>
+  <link name="End" />
+  <joint name="Enf" type="fixed">
+    <origin xyz="0 0 0.475" rpy="0 -1.5707963267948966 0" />
+    <parent link="Hand" />
+    <child link="End" />
+    <axis xyz="0 0 0" />
+  </joint>
+</robot>
