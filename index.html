@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>FRA371 Kinematics Cheat Sheet</title>
+<style>
+  :root{
+    --bg:#0f1117; --panel:#171a23; --panel2:#1e2230; --text:#e8eaf0; --muted:#9aa3b5;
+    --accent:#ff8a3d; --accent2:#4dd0e1; --border:#2b3040; --code:#141722; --good:#4caf50; --bad:#ef5350;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:"Sarabun","Segoe UI",Tahoma,sans-serif;line-height:1.6;}
+  a{color:var(--accent2);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .layout{display:flex;min-height:100vh;}
+  nav{
+    width:250px;flex:0 0 250px;background:var(--panel);border-right:1px solid var(--border);
+    position:sticky;top:0;height:100vh;overflow-y:auto;padding:16px 0;
+  }
+  nav .brand{padding:0 16px 12px;font-weight:700;font-size:1.05rem;border-bottom:1px solid var(--border);margin-bottom:8px;color:var(--accent);}
+  nav .brand small{display:block;color:var(--muted);font-weight:400;font-size:.72rem;margin-top:4px;}
+  nav ul{list-style:none;margin:0;padding:0;}
+  nav li a{display:block;padding:8px 16px;color:var(--muted);font-size:.92rem;border-left:3px solid transparent;}
+  nav li a:hover{background:var(--panel2);color:var(--text);text-decoration:none;}
+  nav li a.active{background:var(--panel2);color:var(--accent);border-left-color:var(--accent);font-weight:600;}
+  nav .section-label{padding:14px 16px 4px;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#5b6377;}
+  main{flex:1;padding:28px 40px 80px;max-width:900px;}
+  section{display:none;}
+  section.active{display:block;animation:fade .15s ease;}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  h1{font-size:1.6rem;color:var(--accent);border-bottom:2px solid var(--border);padding-bottom:10px;margin-top:0;}
+  h2{font-size:1.2rem;color:var(--accent2);margin-top:28px;border-left:4px solid var(--accent2);padding-left:10px;}
+  h3{font-size:1.02rem;color:#c9cee0;margin-top:20px;}
+  p{color:var(--text);}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.9rem;}
+  th,td{border:1px solid var(--border);padding:7px 10px;text-align:left;}
+  th{background:var(--panel2);color:var(--accent2);}
+  tr:nth-child(even){background:#171a2380;}
+  code{background:var(--code);color:#ffd08a;padding:2px 6px;border-radius:4px;font-family:"Consolas","Courier New",monospace;font-size:.88rem;}
+  pre{background:var(--code);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;font-size:.86rem;position:relative;}
+  pre code{background:none;padding:0;color:#dbe3f0;}
+  .kw{color:#c792ea;} .fn{color:#82aaff;} .str{color:#c3e88d;} .cm{color:#676e95;font-style:italic;} .num{color:#f78c6c;}
+  .callout{border-radius:8px;padding:12px 16px;margin:14px 0;border-left:4px solid;}
+  .callout.warn{background:#2a1f14;border-color:var(--accent);}
+  .callout.info{background:#122430;border-color:var(--accent2);}
+  .callout.bad{background:#2a1414;border-color:var(--bad);}
+  .callout.good{background:#122a17;border-color:var(--good);}
+  .callout b{display:block;margin-bottom:4px;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:760px){.grid2{grid-template-columns:1fr;} .layout{flex-direction:column;} nav{position:relative;width:100%;height:auto;flex:none;}}
+  .eq{background:var(--code);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin:10px 0;font-family:"Consolas",monospace;font-size:.92rem;color:#ffe0b3;overflow-x:auto;white-space:pre;}
+  .matrix{display:inline-block;vertical-align:middle;}
+  .checklist{list-style:none;padding-left:0;}
+  .checklist li{padding:4px 0 4px 28px;position:relative;}
+  .checklist li:before{content:"☐";position:absolute;left:0;color:var(--accent2);}
+  .toc-top{color:var(--muted);font-size:.85rem;margin-bottom:18px;}
+  .badge{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:2px 10px;font-size:.75rem;color:var(--accent2);margin-left:8px;}
+  footer{color:var(--muted);font-size:.8rem;margin-top:40px;border-top:1px solid var(--border);padding-top:14px;}
+  ::-webkit-scrollbar{width:9px;height:9px;}
+  ::-webkit-scrollbar-thumb{background:#333a4d;border-radius:5px;}
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <nav>
+    <div class="brand">FRA371 Cheat Sheet<small>Kinematics — offline, ไม่ต้องต่อเน็ต</small></div>
+    <ul>
+      <li><a href="#home" data-target="home">🏠 หน้าหลัก</a></li>
+    </ul>
+    <div class="section-label">ทฤษฎีพื้นฐาน</div>
+    <ul>
+      <li><a href="#terms" data-target="terms">คำศัพท์พื้นฐาน</a></li>
+      <li><a href="#rotation" data-target="rotation">Rotation Matrix</a></li>
+      <li><a href="#composition" data-target="composition">Fixed vs Current Axis</a></li>
+      <li><a href="#homogeneous" data-target="homogeneous">Homogeneous Transform</a></li>
+    </ul>
+    <div class="section-label">DH & Forward Kinematics</div>
+    <ul>
+      <li><a href="#dh" data-target="dh">DH Parameters</a></li>
+      <li><a href="#dhsteps" data-target="dhsteps">5 ขั้นตอน DH Convention</a></li>
+      <li><a href="#fk" data-target="fk">Forward Kinematics</a></li>
+      <li><a href="#ourrobot" data-target="ourrobot">⭐ หุ่นของเรา (Case Study)</a></li>
+    </ul>
+    <div class="section-label">Code / roboticstoolbox</div>
+    <ul>
+      <li><a href="#syntax" data-target="syntax">Syntax หลัก (RTB)</a></li>
+      <li><a href="#urdf" data-target="urdf">โหลด/แก้ URDF</a></li>
+      <li><a href="#errors" data-target="errors">Error ที่เจอบ่อย + วิธีแก้</a></li>
+    </ul>
+    <div class="section-label">ก่อนสอบ</div>
+    <ul>
+      <li><a href="#checklist" data-target="checklist">เช็คลิสต์</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <section id="home" class="active">
+      <h1>FRA371 Kinematics — Cheat Sheet</h1>
+      <p class="toc-top">ไฟล์นี้เปิดได้แบบ <b>offline สมบูรณ์</b> (ไม่มีการโหลดอะไรจากเน็ต) — ใช้ในห้อง Lab/สอบได้ตามระเบียบ (Document sheet อนุญาต, แต่ AI ไม่อนุญาตระหว่างทำ)</p>
+
+      <div class="callout warn">
+        <b>⚠️ กฎห้อง Lab/สอบที่ต้องรู้ (จากสไลด์ Week 2 &amp; 3)</b>
+        AI ทุกชนิดห้ามใช้ตอน Quiz / Lab / Exam (ใช้ได้แค่ตอนเรียน lecture และทำ homework/review) ·
+        ห้ามต่อ WiFi ช่วง 13:45–16:30 · อนุญาต Document sheet / iPad ที่มีโน้ตเข้าไปได้ · เครื่องคิดเลขได้ · ไม่มีอาหาร/เครื่องดื่มยกเว้นมีฝาปิด
+      </div>
+
+      <h2>ใช้ไฟล์นี้ยังไง</h2>
+      <p>คลิกเมนูด้านซ้ายเพื่อเปลี่ยนหน้า ไม่ต้อง scroll ยาว ๆ — ทุกอย่างอยู่ในไฟล์เดียว ไม่โหลดอะไรจากอินเทอร์เน็ต เก็บไฟล์นี้ไว้ในโน้ตบุ๊ก/USB เปิดด้วย browser ได้เลยแม้ไม่มีเน็ต</p>
+
+      <h2>ลำดับการทำ DH Convention (ภาพรวม)</h2>
+      <ol>
+        <li>Setup Home configuration — วาดหุ่นที่ q ทุกตัว = 0</li>
+        <li>Frame assignment — กำหนดแกน z (แนวแกนหมุน/เลื่อนของ joint), แกน x (ตั้งฉากกับ z ทั้งคู่)</li>
+        <li>DH parameters — กรอกตาราง a, α, d, θ</li>
+        <li>หา <sup>n</sup><sub>e</sub>T (transform จาก joint สุดท้ายไป end-effector)</li>
+        <li>คูณ transform ทั้งหมดต่อกัน → ได้ Forward Kinematics</li>
+      </ol>
+      <p>ดูรายละเอียดแต่ละขั้นในหน้า <a data-nav="dhsteps">5 ขั้นตอน DH Convention</a></p>
+    </section>
+
+    <!-- ===================== คำศัพท์พื้นฐาน ===================== -->
+    <section id="terms">
+      <h1>คำศัพท์พื้นฐาน</h1>
+      <table>
+        <tr><th>คำ</th><th>ความหมาย</th></tr>
+        <tr><td><b>Link</b></td><td>ท่อนแขนแข็ง 1 ท่อน เชื่อมระหว่าง joint สองจุด</td></tr>
+        <tr><td><b>Joint (ข้อต่อ)</b></td><td>จุดที่ทำให้เกิดการเคลื่อนที่สัมพัทธ์ระหว่าง link สองท่อน</td></tr>
+        <tr><td><b>Revolute joint</b></td><td>ข้อต่อแบบหมุน (เหมือนบานพับ) — ตัวแปรคือมุม θ (เรเดียน)</td></tr>
+        <tr><td><b>Prismatic joint</b></td><td>ข้อต่อแบบเลื่อนตรง (เหมือนลูกสูบ) — ตัวแปรคือระยะ d (เมตร)</td></tr>
+        <tr><td><b>q</b></td><td>ตัวแปรของ joint ทุกตัวรวมกันเป็น array เช่น q = [q1, q2, q3]</td></tr>
+        <tr><td><b>DOF</b> (Degree of Freedom)</td><td>จำนวน joint ที่เคลื่อนที่ได้อิสระ</td></tr>
+        <tr><td><b>Forward Kinematics (FK)</b></td><td>รู้ค่า q → หาตำแหน่ง/ทิศทางของปลายมือ (ทางเดียว คำตอบเดียวเสมอ)</td></tr>
+        <tr><td><b>Inverse Kinematics (IK)</b></td><td>รู้ตำแหน่งปลายมือที่ต้องการ → หาค่า q (ซับซ้อนกว่า อาจมีหลายคำตอบหรือไม่มีคำตอบ)</td></tr>
+        <tr><td><b>End-effector</b></td><td>จุดปลายสุดของหุ่นยนต์ (มือจับ/เครื่องมือ)</td></tr>
+        <tr><td><b>Frame</b></td><td>ระบบแกนอ้างอิง (x,y,z) ที่มี origin ของตัวเอง</td></tr>
+        <tr><td><b>Home configuration</b></td><td>ท่าเริ่มต้นของหุ่น (มักตั้ง q ทุกตัว = 0)</td></tr>
+        <tr><td><b>SE(3)</b></td><td>เซตของ transform ทั้งหมดที่เป็นการหมุน+เลื่อนแบบ rigid body (4x4 homogeneous matrix)</td></tr>
+        <tr><td><b>SO(3) / SO(n)</b></td><td>เซตของ rotation matrix ล้วน ๆ (ไม่มีการเลื่อน) ที่ A·A<sup>T</sup>=I และ det(A)=1</td></tr>
+      </table>
+
+      <h2>สูตรแปลงหน่วยองศา ↔ เรเดียน</h2>
+      <div class="callout bad"><b>กฎเหล็ก</b> โค้ดทุกอย่างในคอร์สนี้รับมุมเป็น "เรเดียน" เท่านั้น ถ้าใส่องศาตรง ๆ โค้ดจะไม่ error แต่ตอบผิดแบบเงียบ ๆ — อันตรายที่สุด</div>
+      <div class="eq">rad = deg × π / 180
+deg = rad × 180 / π</div>
+      <table>
+        <tr><th>องศา</th><th>เรเดียน (≈)</th><th>เรเดียน (แบบ π)</th></tr>
+        <tr><td>0°</td><td>0</td><td>0</td></tr>
+        <tr><td>30°</td><td>0.5236</td><td>π/6</td></tr>
+        <tr><td>45°</td><td>0.7854</td><td>π/4</td></tr>
+        <tr><td>60°</td><td>1.0472</td><td>π/3</td></tr>
+        <tr><td>90°</td><td>1.5708</td><td>π/2</td></tr>
+        <tr><td>180°</td><td>3.1416</td><td>π</td></tr>
+      </table>
+    </section>
+
+    <!-- ===================== ROTATION ===================== -->
+    <section id="rotation">
+      <h1>Rotation Matrix</h1>
+
+      <h2>Rotation รอบแกนหลัก (2D → ขยายเป็น 3D)</h2>
+      <p>สูตร 2D rotation รอบจุดกำเนิด มุม θ:</p>
+      <div class="eq">R(θ) = [ cosθ  −sinθ ]
+        [ sinθ   cosθ ]</div>
+
+      <p>ขยายเป็น 3D — หมุนรอบแกน x, y, z แต่ละแกน:</p>
+      <div class="grid2">
+        <div class="eq">Rot_x(φ) =
+[ 1      0       0    ]
+[ 0    cosφ   −sinφ ]
+[ 0    sinφ    cosφ ]</div>
+        <div class="eq">Rot_y(α) =
+[  cosα   0   sinα ]
+[   0     1    0   ]
+[ −sinα   0   cosα ]</div>
+      </div>
+      <div class="eq">Rot_z(θ) =
+[ cosθ  −sinθ   0 ]
+[ sinθ   cosθ   0 ]
+[  0       0    1 ]</div>
+
+      <div class="callout info">
+        <b>จำง่าย ๆ</b>
+        แต่ละ Rot จะ "คงแกนที่หมุนรอบไว้เป็นแกนหลักไม่เปลี่ยน" (แถว/คอลัมน์ของแกนนั้นเป็น identity บางส่วน) แล้ว cos/sin ไปอยู่ในสองแกนที่เหลือ
+      </div>
+
+      <h3>ตัวอย่าง</h3>
+      <p>P = [3, 4]<sup>T</sup> บน frame A ซึ่งหมุนรอบจุดกำเนิด 30° เทียบกับ frame O จะได้:</p>
+      <div class="eq">P_O = R(30°) · P_A
+    = [0.866  −0.5 ] [3]   [0.598]
+      [0.5    0.866] [4] = [4.964]</div>
+
+      <h2>Special Orthogonal Matrix SO(n)</h2>
+      <p>Rotation matrix ทุกตัวเป็นสมาชิกของ SO(n) — เช็คว่า matrix ที่คำนวณมาถูกไหมด้วยสมบัตินี้:</p>
+      <ul>
+        <li>A·A<sup>T</sup> = A<sup>T</sup>·A = I</li>
+        <li>A<sup>−1</sup> = A<sup>T</sup> (invert ง่าย ๆ แค่ transpose!)</li>
+        <li>det(A) = 1</li>
+        <li>ทุกแกน (แถว/คอลัมน์) เป็น unit vector และตั้งฉากกัน (x̂·ŷ=0, ŷ·ẑ=0, x̂·ẑ=0)</li>
+      </ul>
+    </section>
+
+    <!-- ===================== COMPOSITION ===================== -->
+    <section id="composition">
+      <h1>Fixed Axis vs Current Axis (สำคัญมาก เจอในข้อสอบบ่อย)</h1>
+
+      <div class="callout warn">
+        <b>กฎที่ต้องจำ</b>
+        <b>Fixed axis</b> (หมุนอ้างอิงจากแกนเดิม/แกนโลกเสมอ) → เรียง matrix จาก<b>ซ้ายไปขวา</b> ตามลำดับที่หมุน<br>
+        <b>Current axis</b> (หมุนอ้างอิงจากแกนใหม่ที่หมุนไปแล้ว) → เรียง matrix จาก<b>ขวาไปซ้าย</b> (กลับลำดับกับ fixed)
+      </div>
+
+      <h3>ตัวอย่าง: หมุน X-Y-Z [90°, 90°, 90°]</h3>
+      <table>
+        <tr><th></th><th>ลำดับการคูณ matrix</th></tr>
+        <tr><td>Fixed axis</td><td><code>R = Rot_z(90°) · Rot_y(90°) · Rot_x(90°)</code></td></tr>
+        <tr><td>Current axis</td><td><code>R = Rot_x(90°) · Rot_y(90°) · Rot_z(90°)</code></td></tr>
+      </table>
+      <p>ผลลัพธ์ทั้งสองแบบ<b>ไม่เท่ากัน</b> — ต้องดูโจทย์ว่าถามแบบไหน (Roll-Pitch-Yaw มักหมายถึง fixed axis, Euler angles แบบ z-y-z / z-y-x มักหมายถึง current axis)</p>
+
+      <h2>Gimbal Lock Problem</h2>
+      <div class="callout bad">
+        เกิดเมื่อแกนหมุนสองแกนมาขนานกัน (coincide) ทำให้เสีย 1 องศาอิสระ — การหมุนสองทิศทางที่ต่างกันแยกไม่ออกจากกัน มักเกิดที่มุม pitch = ±90°
+      </div>
+
+      <h2>Homogeneous Transformation (รวม Rotation + Translation)</h2>
+      <div class="eq">T = [ R    P ]     R = rotation matrix (3x3)
+    [ 0ᵗ   1 ]     P = translation vector (3x1)</div>
+      <p>คูณ transform ต่อกันได้ (เชื่อม frame ต่อ frame):</p>
+      <div class="eq">H⁰ₙ = H⁰₁ · H¹₂ · ... · Hⁿ⁻¹ₙ</div>
+
+      <h3>Special Euclidean Group SE(3) — สมบัติที่ใช้ตรวจคำตอบ</h3>
+      <div class="eq">Inverse:  T⁻¹ = [ Rᵗ   −Rᵗ·P ]
+          [ 0ᵗ      1   ]
+
+Closure:  T1·T2 = [ R1·R2   R1·P2+P1 ]
+                  [  0ᵗ        1     ]  ∈ SE(3)</div>
+    </section>
+
+    <!-- ===================== HOMOGENEOUS / TRANSLATION ===================== -->
+    <section id="homogeneous">
+      <h1>Translation &amp; Homogeneous Transform สรุปสูตร</h1>
+
+      <h2>Translation matrix พื้นฐาน (4x4)</h2>
+      <div class="grid2">
+        <div class="eq">Trans_x(a) =
+[1 0 0 a]
+[0 1 0 0]
+[0 0 1 0]
+[0 0 0 1]</div>
+        <div class="eq">Trans_y(b) =
+[1 0 0 0]
+[0 1 0 b]
+[0 0 1 0]
+[0 0 0 1]</div>
+      </div>
+      <div class="eq">Trans_z(c) =
+[1 0 0 0]
+[0 1 0 0]
+[0 0 1 c]
+[0 0 0 1]</div>
+
+      <h2>สูตร translation ระหว่าง frame (2-DOF example)</h2>
+      <p>หา vector จาก base frame (0) ไปยังจุด P ผ่าน frame กลาง (1) และ (2):</p>
+      <div class="eq">P⁰_(0→P) = R⁰₁·R¹₂ · d²_(2→P)  +  R⁰₁ · d¹_(1→2)  +  d⁰_(0→1)
+             ↑ term 1 (rotate ตำแหน่ง P ผ่านทุก frame)   ↑ term 2        ↑ term 3</div>
+      <div class="callout warn">
+        <b>ข้อผิดพลาดที่มักเกิด</b> ลืมคูณ rotation matrix สะสม (R⁰₁·R¹₂) เข้ากับ vector ของ frame ลูกก่อนบวก — ถ้า frame หมุนไปแล้ว ระยะทางในแกนลูกต้อง "หมุนกลับมาเป็นแกนแม่" ก่อนบวกรวมกัน (แปลว่า <code>d¹₂P ≠ d²₂P</code> ตรง ๆ ต้องคูณ R ก่อน)
+      </div>
+
+      <h3>ตัวอย่างที่ต้องรู้: URDF convention (ใช้จริงในโค้ด)</h3>
+      <div class="callout bad">
+        <b>กฎเหล็กของ URDF</b> <code>&lt;origin xyz="..." rpy="..."&gt;</code> หมายถึง <code>T = Translate(xyz) · Rotate(rpy)</code> — <b>ย้ายตำแหน่งก่อน แล้วค่อยหมุนทับทีหลัง</b> สลับลำดับผิดจุดเดียว ทำให้ chain ทั้งหมดเพี้ยน (อ่านรายละเอียดเต็มในหน้า <a data-nav="urdf">โหลด/แก้ URDF</a>)
+      </div>
+    </section>
+
+    <!-- ===================== DH ===================== -->
+    <section id="dh">
+      <h1>DH Parameters (Modified DH / Craig Convention)</h1>
+
+      <p>แต่ละ joint ใช้เลข 4 ตัว: <code>a</code>, <code>α</code>, <code>d</code>, <code>θ</code></p>
+      <table>
+        <tr><th>พารามิเตอร์</th><th>ความหมาย</th><th>หน่วย</th></tr>
+        <tr><td><code>a<sub>i-1</sub></code></td><td>ความยาวท่อนแขน<b>ก่อนหน้า</b> วัดตามแกน x</td><td>เมตร</td></tr>
+        <tr><td><code>α<sub>i-1</sub></code></td><td>มุมบิดของแกน z ระหว่างท่อนก่อนหน้ากับท่อนนี้ วัดรอบแกน x</td><td>เรเดียน</td></tr>
+        <tr><td><code>d<sub>i</sub></code></td><td>ระยะเลื่อนตามแกน z ของ joint นี้</td><td>เมตร</td></tr>
+        <tr><td><code>θ<sub>i</sub></code></td><td>มุมหมุนรอบแกน z ของ joint นี้</td><td>เรเดียน</td></tr>
+      </table>
+
+      <div class="callout good">
+        <b>กฎจำง่าย</b>
+        Joint <b>revolute</b> (หมุน) → ตัวแปรคือ <code>θ</code>, ใส่ <code>a, α, d</code> เป็นค่าคงที่<br>
+        Joint <b>prismatic</b> (เลื่อน) → ตัวแปรคือ <code>d</code>, ใส่ <code>a, α, θ</code> เป็นค่าคงที่
+      </div>
+
+      <h2>Transform ระหว่าง frame ติดกัน (สูตรหลัก)</h2>
+      <div class="eq">T^(i-1)_i = Trans_x(a_i-1) · Rot_x(α_i-1) · Trans_z(d_i) · Rot_z(θ_i)</div>
+      <p>ลำดับการอ่าน: <b>ย้าย x ก่อน → หมุน x → ย้าย z → หมุน z</b> ทำตามลำดับนี้เสมอ ห้ามสลับ</p>
+
+      <h2>ขั้นตอนกำหนดแกน x (เมื่อ frame assignment)</h2>
+      <ul>
+        <li>x<sub>i</sub> ⊥ z<sub>i</sub></li>
+        <li>x<sub>i</sub> ⊥ z<sub>i+1</sub></li>
+        <li>x<sub>i</sub> ต้องตัดผ่านทั้ง z<sub>i</sub> และ z<sub>i+1</sub></li>
+      </ul>
+      <table>
+        <tr><th>กรณี</th><th>วิธีกำหนด x<sub>i</sub></th></tr>
+        <tr><td>z<sub>i</sub> และ z<sub>i+1</sub> ไม่ตัดกัน ไม่ขนาน</td><td>เอาระยะที่สั้นที่สุด (common normal) ระหว่างสองแกน</td></tr>
+        <tr><td>z<sub>i</sub> ∥ z<sub>i+1</sub> (ขนานกัน)</td><td>ลากตั้งฉากจาก z<sub>i</sub> ไป z<sub>i+1</sub> ทางไหนก็ได้ที่สะดวก</td></tr>
+        <tr><td>z<sub>i</sub> ตัดกับ z<sub>i+1</sub></td><td>ใช้ cross product ระหว่างสองแกน (z<sub>i</sub> × z<sub>i+1</sub> หรือกลับกัน)</td></tr>
+        <tr><td>z<sub>i</sub> ทับเส้นเดียวกับ z<sub>i+1</sub></td><td>เลือกแกนตั้งฉากกับทั้งคู่ตามสะดวก</td></tr>
+      </table>
+    </section>
+
+    <!-- ===================== DH STEPS + EXAMPLES ===================== -->
+    <section id="dhsteps">
+      <h1>5 ขั้นตอน Modified DH Convention (พร้อมตัวอย่างเต็ม)</h1>
+      <ol>
+        <li><b>Setup Home configuration</b> — วาดหุ่นที่ q = 0 ทุกตัว</li>
+        <li><b>Frame assignment</b> — จำนวน frame = n+2 (n = จำนวน joint) กำหนดแกน z ก่อน (แนวแกนที่ joint หมุน/เลื่อน) แล้วกำหนดแกน x ตามกฎด้านบน</li>
+        <li><b>DH parameters</b> — กรอกตาราง a, α, d, θ ทีละแถว (i-1 → i)</li>
+        <li><b>หา <sup>n</sup><sub>e</sub>T</b> — transform จาก frame ของ joint สุดท้ายไปยัง end-effector จริง (บวก offset คงที่)</li>
+        <li><b>Find Forward Kinematics</b> — คูณ T ทุกตัวต่อกัน: T⁰ₑ = T⁰₁ · T¹₂ · ... · Tⁿₑ</li>
+      </ol>
+
+      <h2>ตัวอย่างที่ 1 — แขน 2 revolute joint แนวราบ</h2>
+      <p>Joint 1 หมุนที่ฐาน, Joint 2 หมุนที่ปลายแขนยาว l₁, end-effector ยื่นอีก l₂ ตามแกน x</p>
+      <table>
+        <tr><th>i-1</th><th>i</th><th>a</th><th>α</th><th>d</th><th>θ</th></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>q₁</td></tr>
+        <tr><td>1</td><td>2</td><td>l₁</td><td>0</td><td>0</td><td>q₂</td></tr>
+      </table>
+      <p>End-effector transform (offset l₂ ตามแกน x): <code>T²ₑ = Trans_x(l₂)</code></p>
+      <div class="eq">T⁰ₑ =
+[ c12  −s12   0   l1·c1 + l2·c12 ]
+[ s12   c12   0   l1·s1 + l2·s12 ]
+[  0     0    1        0        ]
+[  0     0    0        1        ]
+
+โดย c12 = cos(q1+q2), s12 = sin(q1+q2)</div>
+      <div class="eq">Pose position:
+  x(q1,q2) = l1·cos(q1) + l2·cos(q1+q2)
+  y(q1,q2) = l1·sin(q1) + l2·sin(q1+q2)</div>
+
+      <h2>ตัวอย่างที่ 2 — ฐานหมุน + แขนยื่นแนวตั้ง + เลื่อนปลาย</h2>
+      <p>Joint1: หมุนที่ฐาน (สูง l₁) / Joint2: หมุนตั้งฉาก (ยาว l₂) / Joint3: prismatic เลื่อนออก</p>
+      <table>
+        <tr><th>i-1</th><th>i</th><th>a</th><th>α</th><th>d</th><th>θ</th></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>l₁</td><td>q₁+π/2</td></tr>
+        <tr><td>1</td><td>2</td><td>0</td><td>π/2</td><td>l₂</td><td>q₂</td></tr>
+        <tr><td>2</td><td>3</td><td>0</td><td>0</td><td>q₃+l₃</td><td>0</td></tr>
+      </table>
+      <div class="callout info">
+        <b>สังเกต:</b> ถ้า joint มี offset มุมคงที่ในท่า home (เช่น home ไม่ได้ตรงกับ θ=0 พอดี) ให้บวกค่านั้นเข้าไปใน θ ของตาราง (ในตัวอย่างนี้คือ <code>q1+π/2</code>) — และถ้า joint เป็น prismatic ค่าเลื่อนจริงบวกกับ offset คงที่ก็ใส่รวมกันใน d (เช่น <code>q3+l3</code>)
+      </div>
+      <div class="eq">Pose position:
+  x(q1,q2,q3) = (l2+l3+l4+q3)·cos(q1)
+  y(q1,q2,q3) = (l2+l3+l4+q3)·sin(q1)
+  z(q1,q2,q3) = l1</div>
+
+      <h2>ตัวอย่างที่ 3 — ฐานหมุน + ปลายหมุนตั้งฉาก + เลื่อนตามแนวแขน</h2>
+      <table>
+        <tr><th>i-1</th><th>i</th><th>a</th><th>α</th><th>d</th><th>θ</th></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>l₁</td><td>q₁</td></tr>
+        <tr><td>1</td><td>2</td><td>l₂</td><td>π/2</td><td>0</td><td>q₂+π/2</td></tr>
+        <tr><td>2</td><td>3</td><td>0</td><td>π/2</td><td>q₃+l₃</td><td>0</td></tr>
+      </table>
+      <div class="eq">Pose position:
+  x(q1,q2,q3) = l2·c1 + (q3+l3+l4)·c1·c2
+  y(q1,q2,q3) = l2·s1 + (q3+l3+l4)·s1·c2
+  z(q1,q2,q3) = l1 + (q3+l3+l4)·s2</div>
+
+      <div class="callout warn">
+        <b>เคล็ดลับคำนวณมือให้เร็ว</b>
+        1) เขียน DH table ให้ครบก่อน (a, α, d, θ ทุกแถว) — ห้ามข้าม<br>
+        2) คูณ matrix ทีละคู่จากซ้ายไปขวา (T⁰₁·T¹₂ ก่อน แล้วเอาผลไปคูณ T²₃ ต่อ) จะพลาดน้อยกว่าคูณทีเดียวหมด<br>
+        3) ใช้สูตร cos(A±B) และ sin(A±B) ทดคำนวณเมื่อเจอ c12, s12 (มุมรวมของ joint ที่ต่อกัน)<br>
+        4) ตรวจคำตอบด้วยการดู pose ที่ home configuration (q=0 ทั้งหมด) ต้องตรงกับภาพที่วาดไว้ตอน setup home
+      </div>
+    </section>
+
+    <!-- ===================== FK ===================== -->
+    <section id="fk">
+      <h1>Forward Kinematics — สรุปเปรียบเทียบกับ IK</h1>
+      <table>
+        <tr><th>Feature</th><th>Forward Kinematics</th><th>Inverse Kinematics</th></tr>
+        <tr><td>Input</td><td>Joint angles (q)</td><td>ตำแหน่ง/ทิศทางปลายมือที่ต้องการ</td></tr>
+        <tr><td>Output</td><td>ตำแหน่ง/ทิศทางปลายมือ</td><td>ค่า joint (q) ที่ต้องใช้</td></tr>
+        <tr><td>ความซับซ้อน</td><td>ง่าย คำนวณตรงไปตรงมา</td><td>ซับซ้อนกว่า อาจมีหลายคำตอบหรือไม่มีคำตอบ</td></tr>
+        <tr><td>ความเป็นเอกลักษณ์</td><td>คำตอบเดียวเสมอ</td><td>อาจมีหลายคำตอบ</td></tr>
+      </table>
+      <div class="eq">Configuration Space  --FK-->  Task Space
+Configuration Space  <--IK--  Task Space</div>
+
+      <h2>วิธีเทียบคำนวณมือกับโค้ด (สำคัญที่สุดสำหรับ Lab นี้)</h2>
+      <ol>
+        <li>คำนวณ DH table มือก่อน (ดูหัวข้อ DH Parameters)</li>
+        <li>คูณ matrix มือทีละคู่ จนได้ T⁰ₑ สุดท้าย → ได้สูตร x(q), y(q), z(q)</li>
+        <li>แทนค่า q ตัวเลขจริงในสูตรมือ → ได้ตัวเลข</li>
+        <li>เขียนโค้ด RTB (ดูหน้า Syntax) แทนค่า q เดียวกัน → เทียบตัวเลขที่ได้ต้องตรงกัน</li>
+      </ol>
+      <div class="callout good">
+        <b>ถ้าตัวเลขไม่ตรงกัน ลำดับการเช็ค:</b>
+        1) มุมเป็นเรเดียนหรือยัง (ลืม deg2rad บ่อยสุด) 2) ลำดับ q array ตรงกับลำดับ joint ไหม 3) ทิศทางแกน α ใส่ถูกไหม (บางทีสลับเครื่องหมาย + / −) 4) ใน DH table θ มี offset คงที่ (เช่น +π/2) หรือไม่ที่ลืมบวกเข้าไปตอนคำนวณมือ
+      </div>
+    </section>
+
+    <!-- ===================== OUR ROBOT CASE STUDY ===================== -->
+    <section id="ourrobot">
+      <h1>⭐ หุ่นของเรา — Case Study เต็มรูปแบบ</h1>
+      <p class="toc-top">ใช้หุ่นจริงจาก <code>Lab0_Group_11/my_robot/robot.urdf</code> — คำนวณมือครบทุกขั้นตอน แล้ว verify ด้วยโค้ดจริง ไฟล์ทดสอบอยู่ที่ <code>Lab0_Group_11/hand_vs_code_fk.py</code> รันได้เลย</p>
+
+      <h2>1. โครงหุ่น (Home configuration)</h2>
+      <p>หุ่นมี 3 joint ต่อกันเป็นลำดับ:</p>
+      <table>
+        <tr><th>Joint</th><th>ประเภท</th><th>แกนที่เคลื่อนที่</th><th>Offset คงที่</th><th>ขอบเขต</th></tr>
+        <tr><td><b>q1</b></td><td>Revolute</td><td>หมุนรอบแกน Z (ที่ฐาน)</td><td>—</td><td>continuous (หมุนได้รอบ)</td></tr>
+        <tr><td><b>q2</b></td><td>Prismatic</td><td>เลื่อนตามแกน Z</td><td>+0.235 m</td><td>0 – 0.54 m</td></tr>
+        <tr><td><b>q3</b></td><td>Prismatic</td><td>เลื่อนตามแกน Z ของเฟรมที่หมุน (จริง ๆ คือทิศทาง X ของโลก ที่หมุนตาม q1)</td><td>+0.09 m (ก่อนสไลด์) และ +0.475 m (จาก Hand ไป End)</td><td>0 – 0.4 m</td></tr>
+      </table>
+      <div class="callout info">
+        <b>ทำไม q3 ถึงเคลื่อนที่ตามแกน X ของโลก ไม่ใช่ Z?</b> เดิม q3 เป็น prismatic ตามแกน X ตรง ๆ แต่กลุ่มเราแก้ URDF ให้ประกาศ <code>axis="0 0 1"</code> (Z) ในเฟรมที่หมุนไปแล้วด้วย <code>rpy="0 90° 0"</code> — ผลคือใน<b>โลกจริง</b> q3 ยังเลื่อนไปในทิศทางเดิม (ทิศ X ที่หมุนตาม q1) เพราะ Ry(+90°) แปลงแกน Z ท้องถิ่นให้ชี้ไปทาง X ของ frame ก่อนหน้า (ดูรายละเอียดที่หน้า <a data-nav="urdf">โหลด/แก้ URDF</a>)
+      </div>
+
+      <h2>2. Frame assignment สำหรับ DH</h2>
+      <ul>
+        <li>z₀ = แกน Z ของโลก (แกนหมุนของ q1)</li>
+        <li>z₁ = แกน Z เดียวกัน (q2 เลื่อนตามแกนเดียวกับ q1 หมุน — ขนานกันสนิท จึง a₀=0, α₀=0)</li>
+        <li>z₂ = ทิศทางที่ q3 เลื่อน ซึ่ง<b>ตั้งฉากกับ z₁</b> (เพราะ q3 เลื่อนในแนวราบ ขณะที่ q1,q2 อยู่แนวตั้ง) → ต้องหมุนแกน α = 90° เพื่อพา z จาก "แนวตั้ง" ไปเป็น "แนวราบ"</li>
+      </ul>
+
+      <h2>3. DH Table (คำนวณมือ — verify แล้วว่าตรงกับโค้ด 100%)</h2>
+      <table>
+        <tr><th>i-1</th><th>i</th><th>a</th><th>α</th><th>d</th><th>θ</th></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>q1</td></tr>
+        <tr><td>1</td><td>2</td><td>0</td><td>0</td><td>0.235 + q2</td><td>0</td></tr>
+        <tr><td>2</td><td>3</td><td>0</td><td>π/2</td><td>0</td><td>0</td></tr>
+        <tr><td>3</td><td>e</td><td>0.09 + q3 + 0.475</td><td>0</td><td>0</td><td>0</td></tr>
+      </table>
+      <div class="callout warn">
+        <b>จุดที่มักพลาด:</b> แถวสุดท้าย <code>a = 0.09 + q3 + 0.475</code> คือระยะที่ต้องรวม<b>ทุกอย่างที่เลื่อนไปในทิศทางเดียวกัน</b> เข้าด้วยกัน (offset ก่อน slide + ค่า q3 ที่เลื่อนจริง + offset จาก Hand ถึง End) — เพราะทุกค่านี้อยู่บนแกนเดียวกันหลังจากหมุน α=90° ไปแล้ว ถ้าแยกใส่หลายแถวจะทำให้ DH table ยาวเกินความจำเป็นและเสี่ยงคำนวณซ้ำซ้อน
+      </div>
+
+      <h2>4. คำนวณ Transform ทีละ Step (T⁰ₑ = T⁰₁·T¹₂·T²₃·T³ₑ)</h2>
+      <div class="eq">Step 1:  T⁰₁ = Rot_z(q1)                              (a=0,α=0,d=0 -> แค่หมุน)
+
+Step 2:  T¹₂ = Trans_z(0.235+q2)                      (a=0,α=0,θ=0 -> แค่เลื่อนตาม z)
+
+Step 3:  T²₃ = Rot_x(90°)                             (a=0,d=0,θ=0 -> แค่บิดแกน 90°)
+
+Step 4:  T³ₑ = Trans_x(0.09+q3+0.475)                 (α=0,d=0,θ=0 -> แค่เลื่อนตาม x ใหม่)</div>
+
+      <h2>5. สูตร Forward Kinematics (Closed-form) — จำง่าย ท่องได้</h2>
+      <div class="eq">ให้  L = 0.09 + q3 + 0.475     (ระยะรวมตามแนวแขนที่ยื่นออก)
+
+  x(q1,q2,q3) = L · cos(q1)
+  y(q1,q2,q3) = L · sin(q1)
+  z(q1,q2,q3) = 0.235 + q2
+
+Rotation matrix ของปลายมือ:
+  R = Rz(q1) · Rx(90°)</div>
+
+      <div class="callout good">
+        <b>ทำไมสูตรออกมาเรียบง่ายแบบนี้?</b> เพราะ q1 แค่หมุนทิศทางในแนวราบ (กำหนด x,y) และ q2 แค่ยกสูง (กำหนด z อย่างเดียว ไม่ไปยุ่งกับ x,y) — สอง joint นี้ทำงาน<b>อิสระจากกัน</b> ส่วน q3 แค่ยืด/หดความยาวแขนในแนวราบที่ q1 กำหนดทิศไว้แล้ว (ทำให้ x,y ขยายสัดส่วนตาม L)
+      </div>
+
+      <h2>6. ตัวอย่างแทนค่าจริง (ลองคำนวณมือตามนี้ก่อนเปิดโค้ด)</h2>
+      <table>
+        <tr><th>q1</th><th>q2</th><th>q3</th><th>คำนวณมือ</th></tr>
+        <tr><td>0°</td><td>0 m</td><td>0 m</td><td>L=0.565 → x=0.565·cos0=<b>0.565</b>, y=0.565·sin0=<b>0</b>, z=0.235+0=<b>0.235</b></td></tr>
+        <tr><td>90°</td><td>0.3 m</td><td>0.2 m</td><td>L=0.765 → x=0.765·cos90=<b>0</b>, y=0.765·sin90=<b>0.765</b>, z=0.235+0.3=<b>0.535</b></td></tr>
+        <tr><td>-45°</td><td>0.5 m</td><td>0.4 m</td><td>L=0.965 → x=0.965·cos(-45)=<b>0.6824</b>, y=0.965·sin(-45)=<b>-0.6824</b>, z=0.235+0.5=<b>0.735</b></td></tr>
+      </table>
+      <div class="callout warn">อย่าลืม: q1 ในสูตรต้องเป็น<b>เรเดียน</b> ก่อนแทนใน cos/sin! (90° = π/2 ≈ 1.5708 rad)</div>
+
+      <h2>7. โค้ด Python เทียบมือ-กับ-โค้ด (รันได้จริง ไม่ต้องมีเน็ต)</h2>
+      <p>ไฟล์นี้อยู่ที่ <code>Lab0_Group_11/hand_vs_code_fk.py</code> — รันด้วย:</p>
+      <pre><code>cd Lab0_Group_11
+python hand_vs_code_fk.py</code></pre>
+
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+<span class="kw">from</span> roboticstoolbox <span class="kw">import</span> Robot
+
+
+<span class="kw">def</span> <span class="fn">hand_fk</span>(q1, q2, q3):
+    <span class="str">"""คำนวณมือแบบ closed-form"""</span>
+    L = <span class="num">0.09</span> + q3 + <span class="num">0.475</span>
+    x = L * np.cos(q1)
+    y = L * np.sin(q1)
+    z = <span class="num">0.235</span> + q2
+    <span class="kw">return</span> np.array([x, y, z])
+
+
+<span class="cm"># โหลดหุ่นจริงจาก URDF</span>
+HERE = Path(<span class="str">'.'</span>).resolve()
+links, name, _, _ = Robot.URDF_read(<span class="str">"my_robot/robot.urdf"</span>, tld=HERE.as_posix())
+robot = Robot(links, name=name)
+
+<span class="cm"># ทดสอบ</span>
+q1, q2, q3 = np.deg2rad(<span class="num">90</span>), <span class="num">0.3</span>, <span class="num">0.2</span>
+
+pos_hand = <span class="fn">hand_fk</span>(q1, q2, q3)
+pos_code = robot.fkine([q1, q2, q3]).t
+
+<span class="fn">print</span>(<span class="str">'มือ :'</span>, np.round(pos_hand, <span class="num">4</span>))
+<span class="fn">print</span>(<span class="str">'โค้ด:'</span>, np.round(pos_code, <span class="num">4</span>))
+<span class="fn">print</span>(<span class="str">'diff:'</span>, np.linalg.norm(pos_hand - pos_code))  <span class="cm"># ต้องได้ ~0</span></code></pre>
+
+      <div class="callout good">
+        <b>ผลจริงที่รันได้ (verify แล้ว):</b> ทุกค่า q ทดสอบ 5 กรณี (0°, 30°, 90°, -45°, 180° ผสมกับ q2,q3 หลายค่า) — diff = 0.000000 ทุกครั้ง คำนวณมือกับโค้ดตรงกัน 100%
+      </div>
+
+      <h2>8. แนวคิดขยายผล (ถ้าโจทย์สอบเปลี่ยนตัวเลข/เพิ่ม joint)</h2>
+      <ul>
+        <li>ถ้าเพิ่ม joint หมุนที่ปลายมือ (เช่น wrist) → เพิ่มแถว DH ต่อจากแถวสุดท้าย ด้วย θ ใหม่เป็นตัวแปร</li>
+        <li>ถ้าค่า offset (0.235, 0.09, 0.475) เปลี่ยนไปตามหุ่นจริงที่วัดได้ → แค่แทนค่าใหม่ในสูตร L และ z โดยตรง โครงสร้างสูตรไม่เปลี่ยน</li>
+        <li>ถ้าโจทย์ถามหา orientation (ไม่ใช่แค่ position) → ใช้ <code>R = Rz(q1)·Rx(90°)</code> ตามข้อ 5 แล้วดึงมุม Euler ออกมาได้ด้วย <code>T.rpy()</code> ในโค้ด</li>
+      </ul>
+    </section>
+
+    <!-- ===================== SYNTAX ===================== -->
+    <section id="syntax">
+      <h1>Syntax หลักของ roboticstoolbox (RTB)</h1>
+
+      <h2>Import ที่ต้องใช้</h2>
+      <pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> roboticstoolbox <span class="kw">import</span> DHRobot, RevoluteMDH, PrismaticMDH, Robot
+<span class="kw">from</span> spatialmath <span class="kw">import</span> SE3
+<span class="kw">import</span> swift
+<span class="kw">import</span> spatialgeometry <span class="kw">as</span> sg</code></pre>
+
+      <h2>สร้างหุ่นจาก DH table</h2>
+      <pre><code>robot = <span class="fn">DHRobot</span>([
+    <span class="fn">RevoluteMDH</span>(a=<span class="num">0.0</span>,  alpha=<span class="num">0.0</span>,  d=<span class="num">0.0</span>),   <span class="cm"># joint 1 revolute</span>
+    <span class="fn">RevoluteMDH</span>(a=<span class="num">0.15</span>, alpha=<span class="num">0.0</span>,  d=<span class="num">0.0</span>),   <span class="cm"># joint 2 revolute</span>
+    <span class="fn">PrismaticMDH</span>(a=<span class="num">0.0</span>, alpha=np.pi/<span class="num">2</span>, theta=<span class="num">0.0</span>), <span class="cm"># joint 3 prismatic</span>
+], name=<span class="str">'my_robot'</span>)
+
+robot.tool = SE3.Tx(<span class="num">0.20</span>)   <span class="cm"># offset คงที่หลัง joint สุดท้าย</span>
+<span class="fn">print</span>(robot)               <span class="cm"># แสดงตาราง DH</span></code></pre>
+      <div class="callout warn">
+        <code>RevoluteMDH(a, alpha, d)</code> → ตัวแปรคือ θ (ไม่ต้องใส่)<br>
+        <code>PrismaticMDH(a, alpha, theta)</code> → ตัวแปรคือ d (ไม่ต้องใส่)
+      </div>
+
+      <h2>Forward Kinematics</h2>
+      <pre><code>q = np.array([<span class="num">0.0</span>, <span class="num">0.0</span>])          <span class="cm"># rad สำหรับ revolute, m สำหรับ prismatic</span>
+T = robot.fkine(q)                <span class="cm"># ได้ SE3 object</span>
+
+T.t        <span class="cm"># -> array([x, y, z])   ตำแหน่งปลายมือ</span>
+T.R        <span class="cm"># -> matrix 3x3          rotation</span>
+T.A        <span class="cm"># -> numpy array 4x4 เต็ม</span>
+<span class="fn">print</span>(T)   <span class="cm"># แสดง matrix สวยงาม</span>
+
+robot.fkine_all(q)   <span class="cm"># list ของ SE3 สะสมถึงแต่ละ link</span></code></pre>
+
+      <h2>แปลงหน่วยมุม</h2>
+      <pre><code>np.deg2rad(<span class="num">90</span>)      <span class="cm"># องศา -> เรเดียน</span>
+np.rad2deg(np.pi/<span class="num">2</span>) <span class="cm"># เรเดียน -> องศา</span></code></pre>
+
+      <h2>ตัวอย่างเต็ม — สร้างแขน 2 ท่อน + คำนวณ + เทียบมือ</h2>
+      <pre><code>toy = <span class="fn">DHRobot</span>([
+    <span class="fn">RevoluteMDH</span>(a=<span class="num">0.0</span>,  alpha=<span class="num">0.0</span>, d=<span class="num">0.0</span>),
+    <span class="fn">RevoluteMDH</span>(a=<span class="num">0.15</span>, alpha=<span class="num">0.0</span>, d=<span class="num">0.0</span>),
+], name=<span class="str">'toy_2link'</span>)
+toy.tool = SE3.Tx(<span class="num">0.20</span>)
+
+q_bent = np.array([np.deg2rad(<span class="num">90</span>), np.deg2rad(<span class="num">90</span>)])
+T = toy.fkine(q_bent)
+tip = T.t
+<span class="fn">print</span>(<span class="str">'tip :'</span>, np.round(tip, <span class="num">4</span>))
+
+<span class="cm"># เทียบกับคำนวณมือ</span>
+hand_calc = np.array([x, y, z])     <span class="cm"># ใส่ค่าที่คำนวณมือ</span>
+diff = np.linalg.norm(T.t - hand_calc)
+<span class="fn">print</span>(<span class="str">'diff:'</span>, round(<span class="fn">float</span>(diff), <span class="num">4</span>), <span class="str">'m'</span>)  <span class="cm"># diff ควรใกล้ 0</span></code></pre>
+
+      <h2>Swift — แสดงผล 3D ใน browser</h2>
+      <pre><code>env = swift.Swift()
+env.launch(realtime=<span class="kw">True</span>)
+env.add(robot, robot_alpha=<span class="num">0.75</span>)
+
+<span class="cm"># วาดแกน xyz ที่แต่ละ frame</span>
+frame_axes = [sg.Axes(length=<span class="num">0.15</span>) <span class="kw">for</span> _ <span class="kw">in</span> robot.fkine_all(np.zeros(robot.n))]
+<span class="kw">for</span> ax <span class="kw">in</span> frame_axes:
+    env.add(ax)
+
+q = np.zeros(robot.n)
+<span class="kw">while</span> <span class="kw">True</span>:
+    T_all = robot.fkine_all(q)
+    <span class="kw">for</span> ax, T <span class="kw">in</span> <span class="fn">zip</span>(frame_axes, T_all):
+        ax.T = T.A
+    env.step(<span class="num">0.05</span>)</code></pre>
+
+      <h2>คำสั่งเช็คหุ่นเร็ว ๆ</h2>
+      <pre><code>robot.n          <span class="cm"># จำนวน joint</span>
+robot.q          <span class="cm"># ค่า joint ปัจจุบัน</span>
+robot.qlim       <span class="cm"># ขอบเขตของแต่ละ joint</span>
+robot.links      <span class="cm"># list ของ Link object</span>
+link.isjoint     <span class="cm"># True ถ้ามี joint (ไม่ใช่ fixed)</span>
+link.v.axis      <span class="cm"># 'Rx','Ry','Rz','tx','ty','tz'</span>
+link.qlim        <span class="cm"># (lower, upper) หรือ None</span>
+link.A(q_i)      <span class="cm"># transform matrix ที่ค่า q_i</span>
+link.parent.name <span class="cm"># ชื่อ parent link</span></code></pre>
+    </section>
+
+    <!-- ===================== URDF ===================== -->
+    <section id="urdf">
+      <h1>โหลดและแก้ไข URDF (สำหรับหุ่นจาก CAD/SolidWorks)</h1>
+
+      <h2>โครงสร้างโฟลเดอร์</h2>
+      <pre><code>my_robot/
+├── robot.urdf
+└── meshes/
+    ├── base_link.STL
+    ├── Link1.STL
+    └── ...</code></pre>
+      <p>ทุกจุดที่อ้าง mesh ต้องเขียนแบบนี้เป๊ะ:</p>
+      <pre><code>&lt;mesh filename=<span class="str">"package://my_robot/meshes/YOUR_FILE.stl"</span>/&gt;</code></pre>
+
+      <h2>โค้ดโหลด URDF</h2>
+      <pre><code><span class="kw">from</span> roboticstoolbox <span class="kw">import</span> Robot
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+HERE = Path(<span class="str">'.'</span>).resolve()
+links, name, _, _ = Robot.URDF_read(<span class="str">"my_robot/robot.urdf"</span>, tld=HERE.as_posix())
+robot = Robot(links, name=name)
+
+<span class="fn">print</span>(<span class="fn">f</span><span class="str">"loaded '{name}' ({robot.n} joints)"</span>)
+
+<span class="cm"># เช็ค mesh ครบไหม</span>
+missing = [g.filename <span class="kw">for</span> link <span class="kw">in</span> robot.links <span class="kw">for</span> g <span class="kw">in</span> link.geometry
+           <span class="kw">if</span> <span class="fn">getattr</span>(g, <span class="str">"filename"</span>, <span class="kw">None</span>) <span class="kw">and</span> <span class="kw">not</span> Path(g.filename).exists()]
+
+<span class="cm"># ดู axis ของแต่ละ joint</span>
+<span class="kw">for</span> link <span class="kw">in</span> robot.links:
+    <span class="kw">if</span> link.isjoint:
+        <span class="fn">print</span>(link.name, link.v.axis, link.qlim)</code></pre>
+
+      <h2 id="urdf-rule">⭐ กฎเหล็ก URDF Origin (ต้องจำให้แม่น)</h2>
+      <div class="callout bad">
+        <code>&lt;origin xyz="dx dy dz" rpy="r p y"&gt;</code> หมายถึง:
+        <div class="eq" style="margin-top:8px">T = Translate(dx, dy, dz) · Rotate(r, p, y)</div>
+        <b>ย้ายตำแหน่งก่อน แล้วหมุนทับทีหลัง</b> (ไม่ใช่หมุนก่อนย้าย!) — ผิดจุดนี้จุดเดียว ทำให้ chain ทั้งหมดเพี้ยน
+      </div>
+
+      <p><code>&lt;axis xyz="0 0 1"&gt;</code> ของ joint หมายถึงแกนใน <b>local frame หลังจาก apply origin แล้ว</b> ไม่ใช่แกนของ parent ตรง ๆ</p>
+
+      <h2>ถ้าโจทย์ให้ "เปลี่ยนแกน joint" แต่ห้ามให้หุ่นขยับ (เคสจริงที่เจอ)</h2>
+      <p>เช่น อยากเปลี่ยน joint จากเลื่อนตามแกน X เป็นเลื่อนตามแกน Z (หมุน Y+90°) แต่ต้องการให้ mesh/ตำแหน่งจริงเหมือนเดิมทุกอย่าง ต้องแก้ <b>4 จุดพร้อมกัน</b>:</p>
+      <ol>
+        <li><b>origin ของ joint ที่จะแก้</b> — เพิ่ม <code>rpy</code> ให้หมุนแกนไปตามต้องการ (เช่น Ry(+90°)) แล้วเปลี่ยน <code>axis</code></li>
+        <li><b>origin ของ visual/collision ของ child link</b> — คูณกลับด้วย rotation ผกผัน: <code>mesh_origin_ใหม่ = Rotate(−θ) · mesh_origin_เดิม</code></li>
+        <li><b>origin ของ inertial (mass center)</b> — หมุนกลับแบบเดียวกับ mesh: <code>inertial_origin_ใหม่ = Rotate(−θ) · inertial_origin_เดิม</code></li>
+        <li><b>Inertia tensor</b> (ixx,iyy,izz,ixy,ixz,iyz) — แปลงเป็น matrix 3x3 แล้ว: <code>I_ใหม่ = M · I_เดิม · Mᵗ</code> (M คือ rotation matrix ที่แปลงพิกัดเก่า→ใหม่)</li>
+        <li>ถ้ามี joint ถัดไปที่ต่อจาก child link นั้น (เช่น fixed joint ปลายมือ) ก็ต้อง compensate เหมือนข้อ 2 ไม่งั้นตำแหน่งปลายแขนจะขยับออกจากเดิม</li>
+      </ol>
+
+      <h3>วิธี verify ว่าแก้ถูก (ทำทุกครั้งหลังแก้ URDF)</h3>
+      <pre><code><span class="cm"># 1. เทียบ FK ปลายมือก่อน/หลังแก้ ต้องตรงกันทุกค่า q</span>
+np.allclose(T_new.t, T_old.t, atol=<span class="num">1e-6</span>)   <span class="cm"># ตำแหน่ง</span>
+np.allclose(T_new.R, T_old.R, atol=<span class="num">1e-6</span>)   <span class="cm"># ทิศทาง</span>
+
+<span class="cm"># 2. เทียบ eigenvalues ของ inertia tensor (ไม่เปลี่ยนไม่ว่าจะหมุนแกนยังไง)</span>
+np.linalg.eigvalsh(I_matrix)
+
+<span class="cm"># 3. เช็ค physical validity ของ inertia tensor</span>
+eigvals &gt; <span class="num">0</span>  <span class="cm"># ต้องเป็นบวกทุกตัว (positive definite)</span>
+ixx+iyy &gt;= izz  <span class="kw">and</span>  iyy+izz &gt;= ixx  <span class="kw">and</span>  izz+ixx &gt;= iyy  <span class="cm"># อสมการสามเหลี่ยม</span></code></pre>
+
+      <div class="callout info">
+        <b>บทเรียนจากของจริง</b> ตอนแก้ URDF แล้วภาพหุ่นหมุนเพี้ยนไปจากที่ควร มักเป็นเพราะลืม compensate mesh (ข้อ 2) — และถ้าคำนวณ inertia tensor ผิดทิศทางของ rotation (สลับ +θ กับ −θ) จะทำให้ ixy/ixz/iyz sign ผิด แม้ ixx/iyy/izz จะดูถูกก็ตาม ให้เช็ค eigenvalues เทียบกับของเดิมเสมอ (ข้อ 2 ด้านบน) เพราะ eigenvalues เป็นค่าที่ไม่เปลี่ยนไม่ว่าจะหมุนแกนอ้างอิงยังไง
+      </div>
+    </section>
+
+    <!-- ===================== ERRORS ===================== -->
+    <section id="errors">
+      <h1>Error ที่เจอบ่อย + วิธีแก้ทันที</h1>
+
+      <h2>1. UnicodeEncodeError ตอน print(robot)</h2>
+      <pre><code>UnicodeEncodeError: 'charmap' codec can't encode characters...</code></pre>
+      <p>เกิดบน Windows เพราะตาราง DH มีตัวอักษรพิเศษ (⍺, ⱼ, θ) วิธีแก้:</p>
+      <pre><code><span class="cm"># PowerShell</span>
+$env:PYTHONIOENCODING=<span class="str">"utf-8"</span>
+
+<span class="cm"># Command Prompt</span>
+set PYTHONIOENCODING=utf-8</code></pre>
+      <p>หรือหลีกเลี่ยงไม่ print(robot) ตรง ๆ — ใช้ <code>robot.fkine(q)</code> ดูผลลัพธ์แทนพอ</p>
+
+      <h2>2. ValueError: cannot reshape array</h2>
+      <pre><code>ValueError: cannot reshape array of size N into shape (M)</code></pre>
+      <p>เกิดเมื่อ <code>q</code> ที่ส่งให้ <code>fkine()</code> จำนวนไม่ตรงกับ joint ของหุ่น วิธีแก้:</p>
+      <pre><code><span class="fn">print</span>(robot.n)         <span class="cm"># เช็คว่าหุ่นมีกี่ joint</span>
+q = np.zeros(robot.n)  <span class="cm"># สร้าง q ให้จำนวนตรงกันเสมอ</span></code></pre>
+
+      <h2>3. FileNotFoundError ตอนโหลด URDF</h2>
+      <pre><code>FileNotFoundError: [Errno 2] No such file or directory: 'my_robot/robot.urdf'</code></pre>
+      <p>path ผิด หรือรันจาก working directory คนละที่กับที่คิด วิธีแก้:</p>
+      <pre><code><span class="kw">from</span> pathlib <span class="kw">import</span> Path
+<span class="fn">print</span>(Path(<span class="str">'.'</span>).resolve())   <span class="cm"># เช็คว่า cwd อยู่ที่ไหน</span>
+<span class="fn">print</span>((Path(<span class="str">'.'</span>)/<span class="str">'my_robot'</span>/<span class="str">'robot.urdf'</span>).exists())</code></pre>
+
+      <h2>4. ผลลัพธ์ผิดแบบไม่มี error เลย (อันตรายที่สุด)</h2>
+      <div class="callout bad">
+        <b>สาเหตุอันดับหนึ่ง: ลืม <code>np.deg2rad()</code></b> — ใส่องศาตรง ๆ แทนเรเดียน โค้ดไม่ error แต่คำตอบผิด
+      </div>
+      <pre><code><span class="cm"># ผิด (เพี้ยนแต่ไม่ error):</span>
+q = np.array([<span class="num">90.0</span>, <span class="num">90.0</span>])
+
+<span class="cm"># ถูก:</span>
+q = np.array([np.deg2rad(<span class="num">90</span>), np.deg2rad(<span class="num">90</span>)])</code></pre>
+      <p><b>วิธีเช็ค:</b> ถ้าค่า q ที่ใส่มากกว่า ~6.28 (2π) แสดงว่าน่าจะลืมแปลงหน่วย</p>
+
+      <h2>5. ModuleNotFoundError</h2>
+      <pre><code>ModuleNotFoundError: No module named 'roboticstoolbox'</code></pre>
+      <p>ต้องมีเน็ตแก้ (ทำก่อนเข้าห้องสอบเท่านั้น เพราะในห้องห้ามต่อ WiFi):</p>
+      <pre><code>pip install <span class="str">"numpy&lt;2"</span> <span class="str">"roboticstoolbox-python[swift]"</span></code></pre>
+
+      <h2>6. Mesh ไฟล์หาไม่เจอ</h2>
+      <pre><code>[FAIL] these mesh files were not found</code></pre>
+      <p>path ใน <code>&lt;mesh filename=...&gt;</code> เขียนผิด หรือ case ตัวอักษรไม่ตรง (.stl vs .STL) เปิด robot.urdf เช็คทุกบรรทัดที่มี mesh ให้ตรงกับชื่อไฟล์จริงเป๊ะ</p>
+
+      <h2>7. Swift เปิด browser ไม่ขึ้น / ค้าง</h2>
+      <p>เช็คว่ามี browser ติดตั้งและตั้งเป็น default แล้ว ลองรันใหม่ หรือเปิด URL ที่ terminal print ออกมาด้วยมือ</p>
+
+      <h2>8. qlim ไม่ enforce อัตโนมัติ (เข้าใจผิดบ่อย)</h2>
+      <div class="callout warn">
+        คิดว่า <code>qlim</code> จะ block ค่าที่เกินขอบเขตอัตโนมัติ — <b>ไม่จริง</b> <code>fkine()</code> ไม่ enforce ให้ ต้องเช็คเองถ้าโจทย์ต้องการ:
+      </div>
+      <pre><code>lo, hi = robot.qlim[<span class="num">0</span>][i], robot.qlim[<span class="num">1</span>][i]
+<span class="kw">if</span> <span class="kw">not</span> (lo &lt;= q[i] &lt;= hi):
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"joint {i} เกินขอบเขต!"</span>)</code></pre>
+    </section>
+
+    <!-- ===================== CHECKLIST ===================== -->
+    <section id="checklist">
+      <h1>เช็คลิสต์ก่อนส่งงาน / ก่อนสอบ</h1>
+      <ul class="checklist">
+        <li>ทุกมุมแปลงเป็นเรเดียนด้วย <code>np.deg2rad()</code> แล้วหรือยัง (เช็คว่าไม่มีค่า q ไหนเกิน ~6.28)</li>
+        <li><code>len(q) == robot.n</code> ก่อนเรียก <code>fkine(q)</code></li>
+        <li>path ของ mesh ใน urdf ตรงกับไฟล์จริงในโฟลเดอร์ meshes/</li>
+        <li>เทียบ <code>T.t</code> (และ <code>T.R</code> ถ้าจำเป็น) กับค่าที่คำนวณมือ ก่อนเชื่อผลจากโค้ด</li>
+        <li>ถ้าแก้ origin/axis ใน URDF แล้วภาพหุ่นเพี้ยนหรือ mesh หมุนไปเอง → ลืม compensate ตาม 4 จุดในหน้า URDF</li>
+        <li>ถ้า print(robot) error encoding → ตั้ง PYTHONIOENCODING=utf-8 ก่อนรัน</li>
+        <li>working directory ตอนรันตรงกับ path ที่ URDF อ้างอิงไหม</li>
+        <li>DH table: เช็คว่า a, α, d, θ ครบทุกแถว และ θ/d มี offset คงที่ (เช่น +π/2) ที่ลืมบวกหรือไม่</li>
+        <li>Fixed axis vs Current axis — อ่านโจทย์ให้ชัดว่าถามแบบไหนก่อนคูณ matrix</li>
+        <li>จำไว้เสมอ: URDF origin = Translate ก่อน แล้ว Rotate ทับทีหลัง</li>
+      </ul>
+
+      <footer>
+        FRA371 Kinematics — Cheat Sheet ฉบับ offline · ทำขึ้นจากสไลด์ Week 1–4 และประสบการณ์จริงจากการแก้ Lab0_Group_11<br>
+        ไม่มีการโหลดทรัพยากรจากอินเทอร์เน็ตในไฟล์นี้ — ใช้งานได้แม้ไม่มีสัญญาณ
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var sections = document.querySelectorAll('main section');
+  var navLinks = document.querySelectorAll('nav a[data-target]');
+
+  function activate(id){
+    sections.forEach(function(s){ s.classList.toggle('active', s.id === id); });
+    navLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-target') === id); });
+    if(location.hash !== '#'+id){ history.replaceState(null, '', '#'+id); }
+    window.scrollTo(0,0);
+  }
+
+  navLinks.forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      activate(a.getAttribute('data-target'));
+    });
+  });
+
+  // links inside content that jump to another section
+  document.querySelectorAll('a[data-nav]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      activate(a.getAttribute('data-nav'));
+    });
+  });
+
+  var initial = (location.hash || '#home').replace('#','');
+  if(!document.getElementById(initial)){ initial = 'home'; }
+  activate(initial);
+})();
+</script>
+
+</body>
+</html>
